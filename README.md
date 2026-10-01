@@ -1,99 +1,77 @@
-# AutoHire.AI
+﻿# AutoHire.AI
 
-> **From Resume to Offer Letter — Autonomously**
+> **From Resume to Offer Letter - Autonomously**
 
-An AI-powered autonomous recruitment command center and pipeline prototype built for high-throughput candidate evaluation, rubric scoring, and workflow orchestration.
+An AI-powered autonomous recruitment pipeline built for high-throughput candidate evaluation, rubric scoring, and workflow orchestration.
 
 ---
 
-## 🚀 Overview
+## Overview
 
 AutoHire.AI automates the entire candidate recruitment lifecycle:
 
-```text
 Candidate submits resume
-          ↓
-     n8n Webhook
-          ↓
-     LlamaParse
-          ↓
- Groq AI Agent / LLaMA 3
-          ↓
- Candidate Score (0–100)
-          ↓
- Automatic Tier Decision
- ┌────────────┬────────────┐
- │            │            │
-Tier A       Tier B       Tier C
- ≥75         50–74         <50
- │            │            │
-Shortlist    Waitlist     Reject
- │            │            │
-Gmail        Gmail        Gmail
- │
+|
+n8n Webhook
+|
+LlamaParse
+|
+Groq AI Scoring
+|
+Candidate Score (0-100)
+|
+Automatic Tier Decision
+| | |
+Tier A Tier B Tier C
+
+=75 50-74 <50
+| | |
+Shortlist Waitlist Reject
+| | |
+Gmail Gmail Gmail
+|
 Google Calendar
- ↓
+|
 Airtable
- ↓
-Slack
- ↓
+|
 React Dashboard
-```
+
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-- **Recruiter Command Center Dashboard (`/`)**:
-  - 4 Key KPI metrics: Candidates Processed, Shortlisted, Avg AI Score, Avg Processing Time.
-  - Interactive Recruitment Conversion Funnel (Applications ➔ AI Screened ➔ Tier A ➔ Tier B ➔ Tier C).
-  - Recent candidates table with instant navigation to profile deep-dives.
-  - Real-time Autonomous Activity Feed.
-- **AI Candidate Screening (`/screening`)**:
-  - Drag-and-drop PDF resume upload zone.
-  - Quick candidate presets across all tiers (Elena Rostova, Marcus Vance, Alex Johnson, Priya Sharma, Rahul Mehta, David Kim, Liam O'Connor, Arjun Verma).
-  - 4-Tier Rubric Weighting (Technical 40%, Experience 30%, Education 15%, Communication 15%).
-  - Live animated pipeline simulation with real-time state changes.
-  - Animated circular score gauge, strengths & gaps breakdown, AI reasoning, and automated dispatch checklist.
-- **Candidate Profiles & Database (`/candidates` & `/candidates/:id`)**:
-  - Searchable, filterable candidate repository by Tier (A, B, C) and Decision (SHORTLIST, WAITLIST, REJECT).
-  - Granular rubric score breakdown progress bars.
-  - Audit trail and automation timeline with timestamps.
-- **Workflow Pipeline Architecture (`/workflow`)**:
-  - Interactive n8n node graph mapping the entire microservice chain.
-  - Live node configuration and execution telemetry inspector.
-- **Analytics & Impact Metrics (`/analytics`)**:
-  - Interactive Recharts donut/pie distribution of tiers.
-  - AI score distribution bar charts.
-  - Processing speed comparison line charts (Manual HR vs. AutoHire.AI).
-  - Automation impact metrics (80% manual effort saved, 99.2% success rate).
-- **Settings & Integrations (`/settings`)**:
-  - Groq Cloud LLaMA 3 model configuration.
-  - LlamaParse OCR configuration.
-  - n8n Webhook router endpoint settings.
-  - Integration toggles for Gmail API, Google Calendar API, Airtable API, and Slack Webhooks.
-- **"▶ Run Demo" Hackathon Mode**:
-  - Automated 5-second end-to-end autonomous pipeline demo with step markers, toast notifications, confetti animations, and state updates.
+- Recruiter Command Center Dashboard with KPI metrics
+- AI Candidate Screening with drag-and-drop PDF upload
+- Candidate Profiles and Database with search and filter
+- Workflow Pipeline Architecture visualization
+- Analytics and Impact Metrics with charts
+- Settings and Integrations panel
+- Hackathon Demo Mode with animated pipeline
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
-- **Frontend**: React 19, Vite
-- **Routing**: React Router v7
-- **Styling**: Vanilla Modern CSS (Dark theme `#070B14`, glassmorphism, responsive)
-- **Icons**: Lucide React
-- **Visualizations**: Recharts
-- **Delight & Animations**: Canvas Confetti
+| Layer | Tool |
+|---|---|
+| Workflow Orchestration | n8n |
+| AI Reasoning | Groq (openai/gpt-oss-20b) |
+| Resume Parsing | LlamaParse |
+| Email Automation | Gmail (n8n node) |
+| Interview Scheduling | Google Calendar (n8n node) |
+| Candidate Database | Airtable |
+| Recruiter Alerts | Slack |
+| Frontend Dashboard | React + Vite |
 
 ---
 
-## 🏃 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (v18 or higher recommended)
-- npm or yarn
+- Node.js v18 or higher
+- npm
 
 ### Installation
 
@@ -109,21 +87,43 @@ npm install
 npm run dev
 ```
 
-Open your browser and navigate to:
-```text
-http://localhost:5173/
-```
+Open: http://localhost:5173
 
-### Production Build
+### n8n Pipeline
 
 ```bash
-npm run build
+n8n start
 ```
+
+Open: http://localhost:5678
+
+Import `n8n/workflow.json` to load the pipeline.
 
 ---
 
-## 👥 Authors & Team
+## Key Metrics
 
-- **Mohammad Adnan Shakil**
-- **Mohammed Ayham**
-- **AutoHire.AI Team**
+- ~52 seconds per candidate end-to-end
+- 80% reduction in manual recruiter effort
+- Consistent bias-reduced scoring - same rubric every time
+- Fully auditable - AI reasoning stored per candidate
+
+---
+
+## Built At
+
+HackSprint 24-Hour Hackathon
+Manipal Academy of Higher Education (MAHE), Bengaluru
+October 17-18, 2026
+Track 22 - AI Automation with n8n
+Organized by Commudle | Sponsors: Paytm, MLH, n8n
+
+---
+
+## Team FAAA
+
+- Mohammad Adnan Shakil
+- Mohammed Ayham
+- Ryan
+- Abhishek
+- Farheen Naaz

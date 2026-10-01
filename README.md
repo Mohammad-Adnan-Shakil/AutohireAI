@@ -124,6 +124,5 @@ Organized by Commudle | Sponsors: Paytm, MLH, n8n
 
 - Mohammad Adnan Shakil
 - Mohammed Ayham
-- Ryan
-- Abhishek
+- Ryan Abhishek
 - Farheen Naaz

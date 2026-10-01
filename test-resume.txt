@@ -1,0 +1,26 @@
+RAHUL SHARMA
+Email: rahul.sharma.test@gmail.com
+Phone: +91 9876543210
+
+SUMMARY
+Software Engineer with 3 years of experience in full-stack development.
+
+SKILLS
+- Languages: Python, JavaScript, Java
+- Frameworks: React, Node.js, FastAPI
+- Databases: PostgreSQL, MongoDB
+- Tools: Docker, Git, AWS Lambda
+
+EXPERIENCE
+Software Engineer — TechCorp India (2021-2024)
+- Built REST APIs serving 50k daily users
+- Reduced backend latency by 40% using caching
+- Led a team of 3 developers on payment integration
+
+PROJECTS
+- E-commerce platform: React + Node.js + PostgreSQL
+- ML price predictor: Python + scikit-learn, 87% accuracy
+
+EDUCATION
+B.Tech Computer Science — VIT University, 2021
+CGPA: 8.4/10

@@ -122,7 +122,8 @@ Organized by Commudle | Sponsors: Paytm, MLH, n8n
 
 ## Team FAAA
 
+- Farheen Naaz
 - Mohammad Adnan Shakil
 - Mohammed Ayham
 - Ryan Abhishek
-- Farheen Naaz
+

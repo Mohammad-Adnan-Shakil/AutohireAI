@@ -6,12 +6,15 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()
+load_dotenv(override=True)
 
 N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL")
 AIRTABLE_API_KEY = os.getenv("AIRTABLE_API_KEY")
 AIRTABLE_BASE_ID = os.getenv("AIRTABLE_BASE_ID")
 AIRTABLE_TABLE_NAME = os.getenv("AIRTABLE_TABLE_NAME", "Candidates")
+
+# Temporary debug line: prints only length and first 3 characters, never the token
+print(f"KEY len={len(AIRTABLE_API_KEY or '')} prefix={(AIRTABLE_API_KEY or '')[:3]} has_dot={'.' in (AIRTABLE_API_KEY or '')}")
 
 app = FastAPI(title="AutoHire.AI Backend")
 

@@ -1,21 +1,79 @@
-import React, { useState } from "react";
-import { useApp } from "../context/AppContext";
+import React, { useState, useEffect } from "react";
 import { CandidateTable } from "../components/CandidateTable";
-import { Search, Filter, Plus, Users, Download } from "lucide-react";
+import { Search, Filter, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = "http://localhost:8000";
+
+const timeAgo = (iso) => {
+  if (!iso) return "—";
+  const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins} min${mins === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? "" : "s"} ago`;
+};
+
+const initialsAvatar = (name) => {
+  const initials = (name || "?")
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><rect width='72' height='72' fill='#0E7490'/><text x='50%' y='50%' dy='.35em' text-anchor='middle' font-family='Arial' font-size='28' font-weight='700' fill='#fff'>${initials}</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+};
+
+const mapCandidate = (c, i) => ({
+  id: `airtable-${i}`,
+  name: c.name || "Unknown",
+  email: c.email || "",
+  role: "—",
+  score: c.score ?? 0,
+  tier: c.tier || "C",
+  decision: c.decision || "REJECT",
+  processingTime: "—",
+  status: "Completed",
+  time: timeAgo(c.timestamp),
+  reasoning: c.reasoning || "",
+  avatar: initialsAvatar(c.name),
+  createdAt: c.timestamp || ""
+});
+
 export const Candidates = () => {
-  const { candidates } = useApp();
+  const [candidates, setCandidates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [tierFilter, setTierFilter] = useState("ALL");
   const [decisionFilter, setDecisionFilter] = useState("ALL");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch(`${API_URL}/candidates`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Backend returned ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const mapped = data
+          .map(mapCandidate)
+          .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        setCandidates(mapped);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
   const filteredCandidates = candidates.filter((c) => {
+    const term = searchTerm.toLowerCase();
     const matchesSearch =
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.email.toLowerCase().includes(searchTerm.toLowerCase());
+      c.name.toLowerCase().includes(term) ||
+      c.role.toLowerCase().includes(term) ||
+      c.email.toLowerCase().includes(term);
 
     const matchesTier = tierFilter === "ALL" || c.tier === tierFilter;
     const matchesDecision = decisionFilter === "ALL" || c.decision === decisionFilter;
@@ -57,12 +115,7 @@ export const Candidates = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: "260px" }}>
-          <div
-            style={{
-              position: "relative",
-              width: "100%"
-            }}
-          >
+          <div style={{ position: "relative", width: "100%" }}>
             <Search
               size={16}
               style={{
@@ -142,7 +195,20 @@ export const Candidates = () => {
 
       {/* Candidate Table Card */}
       <div className="glass-card">
-        <CandidateTable candidates={filteredCandidates} />
+        {loading && (
+          <p style={{ padding: "1.5rem", color: "var(--text-muted)" }}>Loading candidates from Airtable...</p>
+        )}
+        {!loading && error && (
+          <p style={{ padding: "1.5rem", color: "#EF4444" }}>
+            Could not load candidates: {error}. Check that the backend is running on port 8000.
+          </p>
+        )}
+        {!loading && !error && filteredCandidates.length === 0 && (
+          <p style={{ padding: "1.5rem", color: "var(--text-muted)" }}>No candidates found.</p>
+        )}
+        {!loading && !error && filteredCandidates.length > 0 && (
+          <CandidateTable candidates={filteredCandidates} />
+        )}
       </div>
     </div>
   );

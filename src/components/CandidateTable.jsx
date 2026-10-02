@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, CheckCircle, Clock } from "lucide-react";
+import { ChevronRight, CheckCircle } from "lucide-react";
 
 export const CandidateTable = ({ candidates, limit }) => {
   const navigate = useNavigate();
@@ -13,11 +13,10 @@ export const CandidateTable = ({ candidates, limit }) => {
         <thead>
           <tr>
             <th>Candidate</th>
-            <th>Role</th>
             <th>AI Score</th>
             <th>Tier</th>
             <th>Decision</th>
-            <th>Processing Time</th>
+            <th>AI Reasoning</th>
             <th>Status</th>
             <th>Time</th>
             <th>Action</th>
@@ -35,20 +34,23 @@ export const CandidateTable = ({ candidates, limit }) => {
                     <img
                       src={cand.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150"}
                       alt={cand.name}
-                      style={{ width: "36px", height: "36px", borderRadius: "50%", objectFit: "cover" }}
+                      style={{ width: "36px", height: "36px", borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
                     />
                     <div>
-                      <div style={{ fontWeight: 700, color: "#FFF" }}>{cand.name}</div>
+                      <div style={{ fontWeight: 700, color: "#FFF", whiteSpace: "nowrap" }}>{cand.name}</div>
                       <div style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{cand.email}</div>
                     </div>
                   </div>
                 </td>
-                <td style={{ fontWeight: 500 }}>{cand.role}</td>
                 <td>
-                  <span className={`score-pill ${scoreClass}`}>{cand.score} / 100</span>
+                  <span className={`score-pill ${scoreClass}`} style={{ whiteSpace: "nowrap" }}>
+                    {cand.score} / 100
+                  </span>
                 </td>
                 <td>
-                  <span className={`badge ${tierBadge}`}>Tier {cand.tier}</span>
+                  <span className={`badge ${tierBadge}`} style={{ whiteSpace: "nowrap" }}>
+                    Tier {cand.tier}
+                  </span>
                 </td>
                 <td>
                   <span
@@ -61,17 +63,39 @@ export const CandidateTable = ({ candidates, limit }) => {
                     {cand.decision}
                   </span>
                 </td>
-                <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  <Clock size={12} style={{ marginRight: "4px", display: "inline" }} />
-                  {cand.processingTime}
+                <td style={{ maxWidth: "420px" }}>
+                  <div
+                    title={cand.reasoning}
+                    style={{
+                      fontSize: "0.8rem",
+                      lineHeight: 1.45,
+                      color: "var(--text-muted)",
+                      whiteSpace: "normal",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden"
+                    }}
+                  >
+                    {cand.reasoning || "—"}
+                  </div>
                 </td>
                 <td>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.8rem", color: "#10B981" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      fontSize: "0.8rem",
+                      color: "#10B981",
+                      whiteSpace: "nowrap"
+                    }}
+                  >
                     <CheckCircle size={14} />
                     <span>{cand.status}</span>
                   </div>
                 </td>
-                <td style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{cand.time}</td>
+                <td style={{ fontSize: "0.8rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>{cand.time}</td>
                 <td>
                   <button
                     onClick={(e) => {
